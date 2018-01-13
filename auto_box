@@ -1,0 +1,45 @@
+#!/usr/bin/python
+import os
+import sys
+
+if os.getuid() == 0:
+    pass
+else:
+    print 'not root user'
+    sys.exit(1)
+
+version = raw_input('python version ?')
+if version == '3.6.1':
+    url = 'https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz'
+else:
+    print 'not support version'
+    sys.exit(1)
+
+cmd = 'wget ' + url
+res = os.system(cmd)
+if res != 0:
+    print 'download fail !'
+    sys.exit(1)
+
+if version == '3.6.1':
+    cmd = 'tar -zvxf ' +  'Python-3.6.1.tgz'
+    res = os.system(cmd)
+if res != 0:
+    print 'tar fail or download file wrong !'
+    sys.exit(1)
+
+cmd = 'cd Python-3.6.1'
+res = os.system(cmd)
+
+cmd = 'yum install openssl openssl-devel sqlite sqlite-devel bzip2 bzip2-devel expat expat-devel gdbm gdbm-devel readline readline-devel -y'
+res = os.system(cmd)
+
+cmd = './configure --prefix=/usr/local/python3 && make && make install'
+res = os.system(cmd)
+
+cmd = 'ln -sv /usr/local/python3/bin/python3 /usr/local/bin/'
+res = os.system(cmd)
+
+cmd = 'ln -sv /usr/local/python3/bin/pip3 /usr/local/bin/'
+res = os.system(cmd)
+
